@@ -7,14 +7,25 @@ from models import AM_U_Net, R2_AM_U_Net, init_weights
 from dataset import RetinalDataset
 from loss import JaccardLoss
 from train_test import train, test
-from torch.utils.data import DataLoader 
+from torch.utils.data import DataLoader
 from torchvision import transforms
 import os
 import random
+import numpy as np
 from math import floor
 from sklearn.model_selection import train_test_split
 from torch.utils.data import Subset
 
+# Function to set random seeds for reproducibility
+def set_seed(seed):
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed(seed)
+        torch.cuda.manual_seed_all(seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
 
 # Argument parser
 def parse_args():
@@ -29,16 +40,17 @@ def parse_args():
     parser.add_argument("--image_size", type=int, default=512, help="Size of the input images")
     parser.add_argument("--checkpoint", type=str, default=None, help="Path to the checkpoint file")
     parser.add_argument("--init_type", choices=["normal", "xavier", "kaiming", "orthogonal"], default="normal", help="Type of weight initialization")
+    parser.add_argument("--seed", type=int, default=42, help="Random seed for reproducibility")  # Added seed argument
     
     return parser.parse_args()
 
 # Function to split the dataset
-def split_dataset(dataset, train_ratio=0.7):
+def split_dataset(dataset, train_ratio=0.7, seed=42):
     # Get the indices for the dataset
     indices = list(range(len(dataset)))
     
     # Split the indices into train and test sets (70% train, 30% test)
-    train_indices, test_indices = train_test_split(indices, train_size=train_ratio, random_state=42)
+    train_indices, test_indices = train_test_split(indices, train_size=train_ratio, random_state=seed)
 
     # Create subset datasets
     train_dataset = Subset(dataset, train_indices)
@@ -49,6 +61,9 @@ def split_dataset(dataset, train_ratio=0.7):
 def main():
     # Parse arguments
     args = parse_args()
+
+    # Set the random seed for reproducibility
+    set_seed(args.seed)
 
     # Set the model based on the argument
     if args.model == "AM_U_Net":
@@ -94,15 +109,14 @@ def main():
 
     # Create datasets using the provided paths for the chosen dataset
     train_dataset = RetinalDataset(dataset_type=args.dataset,
-      image_dir=dataset_paths[args.dataset]["image_dir"],
+                                   image_dir=dataset_paths[args.dataset]["image_dir"],
                                    mask_dir=dataset_paths[args.dataset]["mask_dir"],
                                    transform=transform)
 
     # Perform the split
-    train_dataset, test_dataset = split_dataset(train_dataset, train_ratio=0.7)
+    train_dataset, test_dataset = split_dataset(train_dataset, train_ratio=0.7, seed=args.seed)
 
     # Now `train_dataset` and `test_dataset` contain 70% and 30% of the images, respectively
-
     train_loader = DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True)
     test_loader = DataLoader(test_dataset, batch_size=args.batch_size, shuffle=False)
 
