@@ -53,11 +53,11 @@ bash download_datasets.sh
 python main.py --model AM_U_Net --dataset DRIVE --batch_size 16 --learning_rate 0.001 --max_epochs 500 --patience 10 --image_size 512
 ```
 
-### 10 Inference on Test Image
+### 10. Inference on Test Image
 ```bash
 python infer.py --model AM_U_Net --checkpoint weights/AM_U_Net_DRIVE_best_model.pth --image_path datasets/DRIVE/test/images/01_test.tif --output_path result.png
 ```
-### 10 Result
+### 11. Result
 
 ![Inference Result](images/result.png)
 
