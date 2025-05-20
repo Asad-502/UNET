@@ -10,11 +10,11 @@ Follow these steps to get started:
 
 ### 1. Clone the Repository
 ```bash
-https://github.com/Asad-502/UNET.git
+!git clone https://github.com/Asad-502/UNET.git
 ```
 ### 2. Change the Directory to the Repo
 ```bash
-cd AM_U_Net
+!cd UNET
 ```
 ### 3. Upload your Json file kor kaggle environment compatibility
 ```bash
