@@ -45,7 +45,7 @@ conda activate am_unet
 
 ### 8. Download Datasets
 ```bash
-bash download_datasets.sh
+!bash UNET/download_datasets.sh
 ```
 
 ### 9. Train and Test on the DRIVE Dataset
