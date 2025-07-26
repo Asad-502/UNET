@@ -1,4 +1,4 @@
-#!/bin/bash
+cd UNET
 
 # Create Directories
 mkdir weights
