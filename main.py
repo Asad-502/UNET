@@ -82,10 +82,10 @@ def main():
     # Determine the dataset paths based on the chosen dataset
     dataset_paths = {
         "DRIVE": {
-            "image_dir": "/content/datasets/drive-digital-retinal-images/DRIVE/training/images",
-            "mask_dir": "/content/datasets/drive-digital-retinal-images/DRIVE/training/1st_manual",
-            "test_image_dir": "/content/datasets/drive-digital-retinal-images/DRIVE/test/images",
-            #"test_mask_dir": "/content/datasets/DRIVE/test/1st_manual"
+            "image_dir": "/kaggle/input/drive-digital-retinal-images-for-vessel-extraction/DRIVE/training/images",
+            "mask_dir": "/kaggle/input/drive-digital-retinal-images-for-vessel-extraction/DRIVE/training/1st_manual",
+            "test_image_dir": "/kaggle/input/drive-digital-retinal-images-for-vessel-extraction/DRIVE/test/images",
+            "test_mask_dir": "/kaggle/input/drive-digital-retinal-images-for-vessel-extraction/DRIVE/training"
         },
         "STARE": {
             "image_dir": "datasets/stare/training/images",
